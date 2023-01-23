@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewModels="clr-namespace:SwapWallet.ViewModels;assembly=SwapWallet"
+             xmlns:forms="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
+             x:Class="SwapWallet.Views.LoginView">
+    <ContentPage.BindingContext>
+        <viewModels:LoginViewModel/>
+    </ContentPage.BindingContext>
+    <ContentPage.Content>
+        <Grid VerticalOptions="Fill" HorizontalOptions="Fill">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*"></RowDefinition>
+                <RowDefinition Height="1*"></RowDefinition>
+                <RowDefinition Height="1*"></RowDefinition>
+                <RowDefinition Height="1*"></RowDefinition>
+            </Grid.RowDefinitions>
+
+           
+            <StackLayout Grid.Row="1">
+                
+                <forms:SvgCachedImage Source="{Binding SelectedUser.Name, Converter={StaticResource IdenticonConverter}}" WidthRequest="100" HeightRequest="100" CacheDuration="0"/>
+                <Label Text="Select an existing user " HorizontalOptions="Center"></Label>
+                <Picker HorizontalOptions="Center" ItemsSource="{Binding Users}" SelectedItem="{Binding SelectedUser}" VerticalOptions="Center" Title="User" ItemDisplayBinding="{Binding Name}"></Picker>
+                
+                
+            </StackLayout>
+            <Entry Grid.Row="2" HorizontalOptions="Center" WidthRequest="150" Text="{Binding Password}" VerticalOptions="End" Placeholder="Enter Password" IsVisible="True" IsPassword="True"></Entry>
+            <StackLayout Grid.Row="3">
+                <Button  Text="Login" HorizontalOptions="Center" VerticalOptions="Center" Command="{Binding Login}" IsVisible="True"></Button>
+                <Label Text="or" HorizontalOptions="Center"></Label>
+                <Button  Text="Create New User" HorizontalOptions="Center" VerticalOptions="End" Command="{Binding Create}"></Button>
+            </StackLayout>
+
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

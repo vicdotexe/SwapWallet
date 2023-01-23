@@ -1,0 +1,68 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<toolkit:Popup xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:toolkit="http://xamarin.com/schemas/2020/toolkit"
+             xmlns:forms="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
+             xmlns:popups="clr-namespace:Swapper.ViewModels.Popups;assembly=SwapWallet"
+             xmlns:forms1="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+             x:Class="Swapper.Views.Popups.CoinPicker"
+             HorizontalOptions="Center"
+             Size="{Binding Converter={StaticResource ScreenSizeConverter}, ConverterParameter='0.65,0.65'}"
+             x:Name="This"
+>
+
+    <toolkit:Popup.BindingContext>
+        <popups:CoinPickerViewModel/>
+    </toolkit:Popup.BindingContext>
+
+    <Grid BackgroundColor="{StaticResource Dark}" HeightRequest="{Binding Source={x:Reference This}, Path=Size.Height}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <SearchBar Grid.Row="0" x:Name="SearchBar" Text="{Binding SearchText}" Placeholder="Search..." TextColor="White" PlaceholderColor="Gray"></SearchBar>
+        <Label Grid.Row="1" Text="Select Token" VerticalOptions="Center"/>
+        <ActivityIndicator Grid.Row="1" IsRunning="{Binding IsBusy}"/>
+        <ListView Grid.Row="2" x:Name="TokensListView"  ItemsSource="{Binding VisibleTokenList}" SelectedItem="{Binding SelectedToken, Mode=OneWayToSource}" CachingStrategy="RecycleElement" HasUnevenRows="True">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <ViewCell.ContextActions>
+                            <MenuItem Text="Remove"/>
+                        </ViewCell.ContextActions>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="{StaticResource IconSize}"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <forms1:CachedImage
+                                Grid.Column="0"
+                                Source="{Binding LogoURI, FallbackValue='help_icon.svg'}" 
+                                HeightRequest="{StaticResource IconSize}" 
+                                WidthRequest="{StaticResource IconSize}" 
+                            >
+
+                            </forms1:CachedImage>
+                            <Label Grid.Column="1" x:Name="item" Text="{Binding Name, Mode=OneWay}" LineBreakMode="TailTruncation" HorizontalOptions="Fill" VerticalOptions="Center"/>
+                            <Label Grid.Column="2" Text="{Binding Symbol, Mode=OneWay, StringFormat='({0})'}" LineBreakMode="NoWrap" HorizontalOptions="End" VerticalOptions="Center"></Label>
+                        </Grid>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+
+        </ListView>
+
+        <Button Grid.Row="3" x:Name="ImportButton" Text="{Binding SearchResult.Symbol, StringFormat='Import {0}'}" IsVisible="{Binding CanImport}" Command="{Binding ImportToken, Mode=OneWay}"/>
+        <Button Grid.Row="4" x:Name="ImportPopular" Text="Import Popular" Command="{Binding ImportPopular}"/>
+        <Button Grid.Row="5" x:Name="BrowseButton" Text="Browse Explorer" BackgroundColor="{x:StaticResource YellowDark}" BorderColor="{x:StaticResource YellowBright}" BorderWidth="1"></Button>
+    </Grid>
+</toolkit:Popup>

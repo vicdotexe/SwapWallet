@@ -1,0 +1,257 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewModels="clr-namespace:SwapWallet.ViewModels;assembly=SwapWallet"
+             xmlns:forms="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
+             x:Class="SwapWallet.Views.LifiSwapView">
+    <ContentPage.BindingContext>
+        <viewModels:LifiSwapViewModel/>
+    </ContentPage.BindingContext>
+    <ContentPage.Content>
+        <Grid BackgroundColor="{StaticResource Dark}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="1*"/>
+            </Grid.RowDefinitions>
+
+            <Frame BackgroundColor="{StaticResource Light}" Padding="5">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="1*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+
+
+                    <Frame Grid.Column="0" BackgroundColor="{x:StaticResource Medium}" HorizontalOptions="Fill" Padding="2" CornerRadius="10" BorderColor="{x:StaticResource Lighter}">
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding FromChainPressed}"></TapGestureRecognizer>
+                        </Frame.GestureRecognizers>
+                        <StackLayout x:Name="chainStack" Orientation="Horizontal" HorizontalOptions="Fill">
+
+                            <forms:SvgCachedImage Source="{Binding FromChain.LogoURI, FallbackValue='help_icon.svg'}" HeightRequest="{StaticResource IconSize}" WidthRequest="{StaticResource IconSize}">
+                            </forms:SvgCachedImage>
+                            <Label  Text="{Binding FromChain.Name, FallbackValue='select network', Mode=TwoWay}" VerticalOptions="Center" HorizontalOptions="FillAndExpand" HorizontalTextAlignment="Center" LineBreakMode="TailTruncation"></Label>
+                        </StackLayout>
+                    </Frame>
+                    <Frame Grid.Row="0" Grid.Column="1"  BackgroundColor="{x:StaticResource Medium}" Padding="2" BorderColor="{x:StaticResource Lighter}" CornerRadius="10" HorizontalOptions="Fill" VerticalOptions="Fill">
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding ToolsPressed}"/>
+                        </Frame.GestureRecognizers>
+                        <Label Text="Exchanges" VerticalOptions="Center" HorizontalOptions="Center"/>
+                    </Frame>
+
+
+                    <StackLayout Grid.Row="1" Grid.Column="0" Orientation="Horizontal">
+                        <Label>
+                            <Label.Text>
+                                <MultiBinding StringFormat="{}Balance: {0:0.######}">
+                                    <Binding Path="Balance"/>
+                                </MultiBinding>
+                            </Label.Text>
+                        </Label>
+                        <Label>
+                            <Label.Text>
+                                <MultiBinding StringFormat="{}({0:C})">
+                                    <Binding Path="Balance"/>
+                                    <Binding Path="NativeCurrencyPrice"/>
+
+                                </MultiBinding>
+                            </Label.Text>
+                        </Label>
+                    </StackLayout>
+
+                    <Label Grid.Row="2" Grid.Column="0" VerticalOptions="Start">
+                        <Label.Text>
+                            <MultiBinding StringFormat="{}{0} {1:C}">
+                                <Binding Path="FromChain.NativeCurrency.Symbol"/>
+                                <Binding Path="NativeCurrencyPrice"/>
+                            </MultiBinding>
+                        </Label.Text>
+                    </Label>
+
+                </Grid>
+            </Frame>
+
+
+            <ScrollView Grid.Row="1">
+                <Frame BackgroundColor="{x:StaticResource Light}" CornerRadius="20" Margin="10" Padding="10">
+                    <Grid VerticalOptions="Fill">
+
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"></RowDefinition>
+                            <RowDefinition Height="0"></RowDefinition>
+                            <RowDefinition Height="Auto"></RowDefinition>
+                            <RowDefinition Height="Auto"></RowDefinition>
+                            <RowDefinition Height="Auto"></RowDefinition>
+                            <RowDefinition Height="Auto"></RowDefinition>
+                            <RowDefinition Height="Auto"></RowDefinition>
+                        </Grid.RowDefinitions>
+
+                        <Frame Grid.Row="0" BackgroundColor="{x:StaticResource Dark}" CornerRadius="20" Padding="10" BorderColor="{x:StaticResource Lighter}">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"></ColumnDefinition>
+                                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+                                <Label Grid.Row="0" Text="From:" HorizontalOptions="Start"/>
+                                <Label Grid.Row="0" Grid.ColumnSpan="3" HorizontalOptions="End">
+                                    <Label.Text>
+                                        <MultiBinding StringFormat="Balance: {0:0.######} {1}">
+                                            <Binding Path="BalanceIn"/>
+                                            <Binding Path="FromToken.Symbol"/>
+                                        </MultiBinding>
+                                    </Label.Text>
+                                </Label>
+                                <Entry BackgroundColor="Transparent" Grid.Row="1" x:Name="AmountIn" Grid.Column="0" Keyboard="Telephone"  HorizontalOptions="Fill"  Text="{Binding FromAmount, Mode=OneWayToSource}" TextColor="White">
+
+                                </Entry>
+
+                                <Button Grid.Row="1" Grid.Column="1" CornerRadius="10" x:Name="TokenInButton" Text="{Binding FromToken.Symbol, FallbackValue=select, Mode=TwoWay}" VerticalOptions="Center" BorderColor="{x:StaticResource YellowBright}" BorderWidth="1" BackgroundColor="{x:StaticResource YellowDark}" Command="{Binding FromTokenPressed}"/>
+                                <Image Grid.Row="1" 
+                                                   Grid.Column="2" 
+                                                   Source="{Binding FromToken.LogoURI, FallbackValue='help_icon.svg'}" 
+                                                   HeightRequest="{StaticResource IconSize}" 
+                                                   WidthRequest="{StaticResource IconSize}"
+                                                   >
+                                </Image>
+                            </Grid>
+                        </Frame>
+
+
+                        <Frame Grid.Row="2" BackgroundColor="{x:StaticResource Dark}" CornerRadius="20" Padding="10" BorderColor="{x:StaticResource Lighter}">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"></ColumnDefinition>
+                                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"></RowDefinition>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+                                <Label Grid.Row="0" Grid.ColumnSpan="3" HorizontalOptions="End">
+                                    <Label.Text>
+                                        <MultiBinding StringFormat="Balance: {0:0.######} {1}">
+                                            <Binding Path="BalanceOut"/>
+                                            <Binding Path="ToToken.Symbol"/>
+                                        </MultiBinding>
+                                    </Label.Text>
+                                </Label>
+                                <Label Grid.Row="0" Text="To:" HorizontalOptions="Start"/>
+                                <Entry BackgroundColor="Transparent" Grid.Row="1" x:Name="AmountOut" Grid.Column="0" IsReadOnly="True" Keyboard="Numeric" HorizontalOptions="Fill" Text="{Binding ToAmount, StringFormat='{0:0.######}' , Mode=TwoWay}" TextColor="White"/>
+                                <ActivityIndicator Grid.Row="1" IsRunning="{Binding GettingQuote}" HorizontalOptions="Start"/>
+                                <Button Grid.Row="1" Grid.Column="1" CornerRadius="10" x:Name="TokenOutButton" Text="{Binding ToToken.Symbol, FallbackValue='select', Mode=TwoWay}" VerticalOptions="Center" BorderColor="{x:StaticResource YellowBright}" BorderWidth="1" BackgroundColor="{x:StaticResource YellowDark}" Command="{Binding ToTokenPressed}">
+
+                                </Button>
+                                <Image Grid.Row="1" Grid.Column="2" Source="{Binding ToToken.LogoURI, FallbackValue='help_icon.svg'}" HeightRequest="{StaticResource IconSize}" WidthRequest="{StaticResource IconSize}">
+
+                                </Image>
+
+                            </Grid>
+                        </Frame>
+                        <Grid Grid.Row="3" HorizontalOptions="End">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Label Grid.Column="0" Text="Slippage:" VerticalOptions="Center" HorizontalOptions="End"></Label>
+                            <Frame Grid.Column="1" BackgroundColor="{x:StaticResource Dark}" BorderColor="{x:StaticResource Lighter}" Padding="10" CornerRadius="10" VerticalOptions="Center" HorizontalOptions="End">
+                                <StackLayout Orientation="Horizontal" HorizontalOptions="EndAndExpand">
+                                    <Entry Grid.ColumnSpan="1" x:Name="Slippage" Keyboard="Telephone" VerticalOptions="Fill" HorizontalOptions="Fill" Text="{Binding Slippage}" BackgroundColor="Transparent" TextColor="White" HorizontalTextAlignment="End"></Entry>
+                                    <Label Text="%" VerticalOptions="Center" />
+                                </StackLayout>
+                            </Frame>
+                        </Grid>
+
+                        <Button Grid.Row="4" x:Name="SwapButton" Text="Swap" IsEnabled="{Binding CanSwap}" Command="{Binding DoSwap}" BackgroundColor="{x:StaticResource Dark}" CornerRadius="10"/>
+                        <Frame Grid.Row="5" BackgroundColor="{x:StaticResource Medium}" BorderColor="Transparent" CornerRadius="20" Padding="5">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"></RowDefinition>
+                                    <RowDefinition Height="Auto"></RowDefinition>
+                                    <RowDefinition Height="Auto"></RowDefinition>
+                                    <RowDefinition Height="Auto"></RowDefinition>
+                                    <RowDefinition Height="Auto"></RowDefinition>
+                                    <RowDefinition Height="Auto"></RowDefinition>
+                                    <RowDefinition Height="Auto"></RowDefinition>
+                                    <RowDefinition Height="Auto"></RowDefinition>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition></ColumnDefinition>
+                                    <ColumnDefinition></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+
+
+                                <Label Grid.Row="0" Grid.ColumnSpan="2" Text="Summary" HorizontalOptions="Center" TextColor="{x:StaticResource Lightest}"/>
+                                <Label Grid.Row="0" Grid.ColumnSpan="2" 
+                                       Text="{Binding SecondsUntilUpdate, Mode=OneWay}" HorizontalOptions="End" TextColor="{StaticResource Lightest}"/>
+                                <Label Grid.Row="1" Grid.Column="0" Text="Minimum:" HorizontalOptions="Start" Grid.ColumnSpan="2">
+                                    <Label.Triggers>
+                                        <DataTrigger TargetType="Label" Binding="{Binding IsExactIn}" Value="false">
+                                            <Setter Property="Text"  Value="{Binding TokenIn.Symbol, StringFormat='Maximum Sent:', FallbackValue='Minimum Sent:'}" />
+                                        </DataTrigger>
+                                        <DataTrigger TargetType="Label" Binding="{Binding IsExactIn}" Value="true">
+                                            <Setter Property="Text"  Value="{Binding TokenOut.Symbol, StringFormat='Minimum Recieved:', FallbackValue='Minimum Recieved:'}" />
+                                        </DataTrigger>
+                                    </Label.Triggers>
+                                </Label>
+                                <StackLayout Orientation="Horizontal" Grid.Row="1" Grid.Column="1" HorizontalOptions="End">
+                                    <Label Grid.Row="1" Grid.Column="1" Text="{Binding Quote.estimate.toAmountMin,StringFormat='{0:F6}' }" HorizontalOptions="End"/>
+                                </StackLayout>
+
+                                <Label Grid.Row="2" Grid.Column="0" Text="Price Impact:" HorizontalOptions="Start"></Label>
+                                <Label Grid.Row="2" Grid.Column="1" Text="{Binding Quote.estimate.data.estimatedPriceImpact, StringFormat='{0:P}'}" HorizontalOptions="End"></Label>
+                                <Label Grid.Row="3" Grid.Column="0" Text="{Binding FromToken.Symbol, StringFormat='{0} Price:', FallbackValue='In Price:'}" HorizontalOptions="Start"></Label>
+                                <Label Grid.Row="3" Grid.Column="1" Text="{Binding FromTokenUsdPrice, StringFormat='${0:N4}'}" HorizontalOptions="End"></Label>
+                                <Label Grid.Row="4" Grid.Column="0" Text="{Binding ToToken.Symbol, StringFormat='{0} Price:', FallbackValue='Out Price:'}" HorizontalOptions="Start"></Label>
+                                <Label Grid.Row="4" Grid.Column="1" Text="{Binding ToTokenUsdPrice, StringFormat='${0:N4}'}" HorizontalOptions="End"></Label>
+                                <Label Grid.Row="5" Grid.ColumnSpan="2" Text="{Binding Route}" HorizontalOptions="Center"/>
+                                <StackLayout Grid.Row="6">
+                                    <Label Text="{Binding ToolPath, StringFormat='Path: {0}'}"/>
+                                </StackLayout>
+                                <ActivityIndicator Grid.ColumnSpan="2" Grid.RowSpan="5" IsRunning="{Binding GettingQuote}" VerticalOptions="Start" HorizontalOptions="Center"/>
+                            </Grid>
+                        </Frame>
+
+
+
+                        <Frame Grid.Row="6" BackgroundColor="{x:StaticResource Medium}" CornerRadius="10" Padding="5">
+
+                        </Frame>
+
+                        <Frame Grid.Row="7" CornerRadius="10" Padding="5" BackgroundColor="{x:StaticResource Medium}"  BorderColor="Transparent">
+                            <StackLayout>
+                                <Label Text="Transactions" HorizontalOptions="Center"/>
+                                <ListView x:Name="ActivityList" BackgroundColor="{x:StaticResource Medium}" ItemsSource="{Binding ActivityQueue}" SelectedItem="{Binding SelectedMessage}">
+                                    <ListView.ItemTemplate>
+                                        <DataTemplate>
+                                            <ViewCell>
+                                                <StackLayout Orientation="Horizontal">
+                                                    <Label x:Name="myLabel" Text="{Binding Message}"/>
+                                                </StackLayout>
+                                            </ViewCell>
+                                        </DataTemplate>
+                                    </ListView.ItemTemplate>
+                                </ListView>
+                            </StackLayout>
+
+                        </Frame>
+
+                    </Grid>
+                </Frame>
+
+            </ScrollView>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<toolkit:Popup xmlns="http://xamarin.com/schemas/2014/forms"
+               xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+               xmlns:toolkit="http://xamarin.com/schemas/2020/toolkit"
+               xmlns:forms="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
+               x:Class="SwapWallet.Views.Popups.ChainPicker"
+               Size="{Binding Converter={StaticResource ScreenSizeConverter}, ConverterParameter='0.65,0.65'}">
+   
+    <toolkit:Popup.Content>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="1*"></RowDefinition>
+            </Grid.RowDefinitions>
+
+            <Frame Grid.Row="0" BackgroundColor="{x:StaticResource Lighter}">
+                <Label Text="Select Chain" TextColor="White" HorizontalOptions="Center"></Label>
+            </Frame>
+            <ListView Grid.Row="1" x:Name="ChainListView"
+                      BackgroundColor="{x:StaticResource Light}" 
+                      VerticalOptions="Start" HasUnevenRows="True">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <StackLayout x:Name="stack" Orientation="Horizontal">
+                                <forms:SvgCachedImage
+                                    Source="{Binding LogoURI, FallbackValue='help_icon.svg'}" 
+                                    HeightRequest="{StaticResource IconSize}"
+                                    WidthRequest="{StaticResource IconSize}">
+                                </forms:SvgCachedImage>
+                                <Label x:Name="item" Text="{Binding Name, Mode=OneWay}" VerticalOptions="Center"/>
+                            </StackLayout>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </Grid>
+    </toolkit:Popup.Content>
+
+</toolkit:Popup>

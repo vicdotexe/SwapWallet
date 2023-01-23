@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewModels="clr-namespace:SwapWallet.ViewModels;assembly=SwapWallet"
+             xmlns:forms="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
+             x:Class="SwapWallet.Views.FlyoutHeaderView">
+    <ContentView.BindingContext>
+        <viewModels:FlyoutHeaderViewModel/>
+    </ContentView.BindingContext>
+    <ContentView.Content>
+      <Grid>
+          <StackLayout>
+              <forms:SvgCachedImage Source="{Binding SelectedAccount.PublicAddress, Converter={StaticResource IdenticonConverter}}" WidthRequest="50" HeightRequest="50"/>
+              <Picker Title="Account" ItemsSource="{Binding Accounts}" SelectedItem="{Binding SelectedAccount}" ItemDisplayBinding="{Binding Path=Name}" HorizontalOptions="Fill"></Picker>
+            </StackLayout>
+          
+      </Grid>
+  </ContentView.Content>
+</ContentView>

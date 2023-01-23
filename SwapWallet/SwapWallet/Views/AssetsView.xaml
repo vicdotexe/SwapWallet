@@ -1,0 +1,88 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:syncfusion="clr-namespace:Syncfusion.SfDataGrid.XForms;assembly=Syncfusion.SfDataGrid.XForms"
+             xmlns:viewModels="clr-namespace:SwapWallet.ViewModels;assembly=SwapWallet"
+             x:Class="SwapWallet.Views.AssetsView">
+    <ContentPage.BindingContext>
+        <viewModels:AssetsViewModel/>
+    </ContentPage.BindingContext>
+    <ContentPage.Content>
+
+
+        <Grid BackgroundColor="{StaticResource Dark}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    <ColumnDefinition Width="1*"></ColumnDefinition>
+                    <ColumnDefinition Width="1*"/>
+                </Grid.ColumnDefinitions>
+                <Image Grid.Column="0" Source="{Binding Chain.LogoURI}" WidthRequest="{StaticResource IconSize}" HeightRequest="{StaticResource IconSize}"></Image>
+                <Button Grid.Column="1" Text="{Binding Chain.Name, FallbackValue='SelectChain'}" Command="{Binding PickChain}" IsEnabled="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}"/>
+                <Label Grid.Column="2" Text="Value"/>
+            </Grid>
+
+
+            <syncfusion:SfDataGrid Grid.Row="2" ItemsSource="{Binding TokenBalances}" SelectedItem="{Binding Selected}" HorizontalOptions="Fill" 
+                                   SelectionMode="SingleDeselect" AutoGenerateColumnsMode="None" GridStyle="{StaticResource customStyle}" ColumnSizer="Star" AllowPullToRefresh="True">
+                <syncfusion:SfDataGrid.Columns>
+                    <syncfusion:GridImageColumn HeaderText=" " MappingName="Token.LogoURI" AllowSorting="False" Width="{StaticResource IconSize}"/>
+                    <syncfusion:GridTextColumn HeaderText="Symbol" MappingName="Token.Symbol" AllowSorting="True"/>
+                    <syncfusion:GridNumericColumn HeaderText="Price" MappingName="PriceUsd" Format="C"/>
+                    <syncfusion:GridNumericColumn HeaderText="Balance" MappingName="Balance" Format="#,###.####" />
+                    <syncfusion:GridNumericColumn HeaderText="Value" MappingName="BalanceUsd" Format="C"/>
+                </syncfusion:SfDataGrid.Columns>
+            </syncfusion:SfDataGrid>
+
+            <!--
+            <ListView Grid.Row="2" ItemsSource="{Binding TokenBalances}" SelectedItem="{Binding Selected}">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                    <ColumnDefinition Width="1*"></ColumnDefinition>
+                                    <ColumnDefinition Width="1*"></ColumnDefinition>
+                                    <ColumnDefinition Width="1*"></ColumnDefinition>
+                                    <ColumnDefinition Width="1*"></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+
+                                <Image Grid.Column="0" Source="{Binding Token, Converter={StaticResource LogoConverter}}" HeightRequest="40" WidthRequest="{StaticResource IconSize}" Margin="5"></Image>
+                                <Label Grid.Column="1" Text="{Binding Token.Symbol}" VerticalOptions="Center"></Label>
+                                <Label Grid.Column="2" Text="{Binding PriceUsd, StringFormat='(${0:N2})'}" VerticalOptions="Center" HorizontalOptions="End"></Label>
+                                <Label Grid.Column="3" Text="{Binding Balance, StringFormat='{0:N2}'}" HorizontalOptions="End" HorizontalTextAlignment="End" VerticalOptions="Center"></Label>
+                                <Label Grid.Column="4" Text="{Binding BalanceUsd, StringFormat='(${0:N2})'}" HorizontalOptions="End" HorizontalTextAlignment="End" VerticalOptions="Center"></Label>
+                            </Grid>
+
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            !-->
+            <ActivityIndicator Grid.Row="2" IsRunning="{Binding IsBusy}" HorizontalOptions="Center"></ActivityIndicator>
+            <Frame Grid.Row="3" Padding="5">
+                <Grid HorizontalOptions="Center">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <StackLayout>
+                        <Label Text="Don't see your token? Try importing."/>
+                        <Button  Text="Import" HorizontalOptions="Center" Command="{Binding Import}"/>
+                    </StackLayout>
+                </Grid>
+            </Frame>
+
+        </Grid>
+
+
+
+    </ContentPage.Content>
+</ContentPage>

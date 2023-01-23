@@ -1,0 +1,65 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewModels="clr-namespace:SwapWallet.ViewModels;assembly=SwapWallet"
+             xmlns:forms="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
+             x:Class="SwapWallet.Views.AccountsView">
+    <ContentPage.BindingContext>
+        <viewModels:AccountsViewModel/>
+    </ContentPage.BindingContext>
+    <ContentPage.Content>
+        <Grid Padding="10">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+            </Grid.RowDefinitions>
+
+            <Frame>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                    </Grid.RowDefinitions>
+
+                    <StackLayout Grid.Row="0">
+                        <forms:SvgCachedImage  Source="{Binding SelectedAccount.PublicAddress, Converter={StaticResource IdenticonConverter}}" WidthRequest="50" HeightRequest="50" HorizontalOptions="Center" VerticalOptions="Center"/>
+                        <Label Text="{Binding SelectedAccount.Name}"  HorizontalTextAlignment="Center"></Label>
+
+                        <Button Text="Edit Name" IsVisible="{Binding SelectedAccount, Converter={StaticResource IsNotNullOrEmptyConverter}}" HorizontalOptions="Center" Command="{Binding Edit}"></Button>
+                        
+                    </StackLayout>
+                    <forms:SvgCachedImage Grid.Row="1"  Source="{Binding SelectedAccount.PublicAddress, Converter={StaticResource QrConverter}}"></forms:SvgCachedImage>
+                    <StackLayout Grid.Row="2">
+                        <Label Text="{Binding SelectedAccount.PublicAddress}" HorizontalOptions="Center"></Label>
+                        <Button Text="Get Private Key" Command="{Binding GetPrivateKey}"></Button>
+                    </StackLayout>
+                </Grid>
+            </Frame>
+            
+            <Frame Grid.Row="1">
+                <StackLayout>
+                    <Label Text="Accounts" HorizontalOptions="Center"></Label>
+                    <ListView ItemsSource="{Binding Accounts}" SelectedItem="{Binding SelectedAccount}">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <ViewCell>
+                                    <Label Text="{Binding Name}"/>
+                                </ViewCell>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </StackLayout>
+            </Frame>
+
+
+            <StackLayout Grid.Row="2" Orientation="Horizontal" HorizontalOptions="Center" VerticalOptions="Center">
+                <Button Text="New" Command="{Binding GenerateNew}"></Button>
+                <Button Text="Import" Command="{Binding Import}"></Button>
+            </StackLayout>
+
+            
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

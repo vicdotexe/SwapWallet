@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewModels="clr-namespace:SwapWallet.ViewModels;assembly=SwapWallet"
+             x:Class="SwapWallet.Views.UserCreationView">
+    <ContentPage.BindingContext>
+        <viewModels:UserCreationViewModel/>
+    </ContentPage.BindingContext>
+    <ContentPage.Content>
+        <Grid HorizontalOptions="Center" VerticalOptions="Center">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*"></RowDefinition>
+                <RowDefinition Height="2*"></RowDefinition>
+                <RowDefinition Height="1*"></RowDefinition>
+                <RowDefinition Height="1*"></RowDefinition>
+                <RowDefinition Height="1*"></RowDefinition>
+            </Grid.RowDefinitions>
+
+
+            <StackLayout>
+                <Button Grid.Row="0" VerticalOptions="End" HorizontalOptions="End" Text="Change Words" Command="{Binding NewWords}"></Button>
+                <Label Text="Keep record of your 12 word phrase. You will need it to recover any accounts(addresses) created under this wallet." HorizontalOptions="Center" VerticalOptions="Center"></Label>
+                
+            </StackLayout>
+            
+            
+
+            <CollectionView Grid.Row="1" ItemsSource="{Binding Words}" SelectionMode="None" HorizontalOptions="Center" VerticalOptions="Center">
+                <CollectionView.ItemsLayout>
+                    <GridItemsLayout HorizontalItemSpacing="10" VerticalItemSpacing="5" Orientation="Vertical" Span="4"/>
+                </CollectionView.ItemsLayout>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Frame>
+                            <Label Text="{Binding}" HorizontalOptions="Center" VerticalOptions="Center"></Label>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+            
+
+
+            <Entry x:Name="NameEntry"  Grid.Row="2" Text="{Binding Name}" Placeholder="Enter Name..." HorizontalOptions="Center" WidthRequest="200" VerticalOptions="Center"></Entry>
+            <Entry x:Name="PasswordEntry"  Grid.Row="3" Text="{Binding Password}"  Placeholder="Enter Password..." HorizontalOptions="Center" WidthRequest="150" VerticalOptions="Center" IsPassword="True"></Entry>
+            <StackLayout Grid.Row="4" Orientation="Horizontal" HorizontalOptions="Center">
+                <Button Text="Create" Command="{Binding Confirm}" HorizontalOptions="Center" VerticalOptions="Center"></Button>
+                <Button Text="Cancel" Command="{Binding Cancel}" HorizontalOptions="Center" VerticalOptions="Center"></Button>
+            </StackLayout>
+
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>
